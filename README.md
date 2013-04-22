@@ -10,21 +10,22 @@ Second, you can create .feature file. Example of scenario:
 
     Given I log in as "admin"
     When I am on homepage
-    Then Save a screenshot
+    And I change browser size to 1024x768px
+    Then I save a screenshot
     When I change frontpage display to Combo list
     And I change guest frontpage display to List of categories,Course search box
     And Repeat in themes "Afterburner,Anomaly,Arialist,Binarius,Boxxie,Brick,Formal white,FormFactor,Fusion,Leatherbound,Magazine,Nimble,Nonzero,Overlay,Serenity,Simple,Sky High,Splash,Standard (legacy),Standard":
       """
       When I am on homepage
-      Then Save a screenshot as homepage_admin_{themename}
+      Then I save a screenshot as homepage_admin_{themename}
       And I log out
-      And Save a screenshot as homepage_guest_{themename}
+      And I save a screenshot as homepage_guest_{themename}
       And I log in as "admin"
       """
     And I change theme to MyMobile
-    Then Save a screenshot as homepage_admin_{themename}
+    Then I save a screenshot as homepage_admin_{themename}
     And I log out
-    And Save a screenshot as homepage_guest_{themename}
+    And I save a screenshot as homepage_guest_{themename}
 
 Please note:
 You must be logged in as admin in order to change theme, repeat in themes and

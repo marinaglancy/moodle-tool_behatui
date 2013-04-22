@@ -45,6 +45,26 @@ class behat_ui extends behat_base {
     /**
      * Saves screenshot with default filename
      *
+     * @Then /^I save a screenshot$/
+     * @param string $filename
+     */
+    public function i_save_a_screenshot() {
+        $this->save_a_screenshot_as(null);
+    }
+
+    /**
+     * Saves screenshot with specified filename
+     *
+     * @Then /^I save a screenshot as (.*)$/
+     * @param string $filename
+     */
+    public function i_save_a_screenshot_as($filename) {
+        $this->save_a_screenshot_as($filename);
+    }
+
+    /**
+     * Saves screenshot with default filename
+     *
      * @Then /^Save a screenshot$/
      * @param string $filename
      */
@@ -130,6 +150,8 @@ class behat_ui extends behat_base {
     }
 
     /**
+     * Loops throught themes and repeat sequence of commands in each of them
+     *
      * @Then /^Repeat in themes "([^"]*)":$/
      */
     public function repeat_in_themes($themes, PyStringNode $commands)
@@ -179,6 +201,7 @@ class behat_ui extends behat_base {
     }
 
     /**
+     * Changes value in admin setting that consists of several select elements
      * 
      * @param string $label either 'frontpage' or 'frontpageloggedin'
      * @param string $value comma-separated list of frontpage sections
@@ -214,5 +237,19 @@ class behat_ui extends behat_base {
         }
 
         $this->find_button('Save changes')->press();
+    }
+
+    /**
+     * Changes browser window size
+     *
+     * Example: I change browser size to 1024x768px (all non-digits will be ignored or treated as separators)
+     *
+     * @Given /^I change browser size to ([\d]+)[^\d]+([\d]+)[^\d]*$/
+     * @param string $width
+     * @param string $height
+     */
+    public function i_change_browser_size_to($width, $height) {
+        $this->getSession()->resizeWindow((int)$width, (int)$height, null);
+        return true;
     }
 }
