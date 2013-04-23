@@ -122,6 +122,7 @@ class behat_ui extends behat_base {
         }
 
         // save screenshot
+        $this->wait(self::TIMEOUT, '(document.readyState === "complete")');
         $this->saveScreenshot($filename, $filepath);
         return true;
     }
@@ -160,10 +161,14 @@ class behat_ui extends behat_base {
         foreach (preg_split('/\s*,\s*/', $themes, 0, PREG_SPLIT_NO_EMPTY) as $theme) {
             $rv[] = new Given("I change theme to $theme");
             foreach (preg_split('/\s*\n\s*/', $commands->getRaw(), 0, PREG_SPLIT_NO_EMPTY) as $command) {
+                $command = preg_replace('/[\s]*\#.*$/', '', $command);
                 $command = preg_replace(array('/^When /','/^Given /','/^Then /','/^And /'), '', $command);
-                $rv[] = new Given($command);
+                if (strlen(trim($command))) {
+                    $rv[] = new Given($command);
+                }
             }
         }
+        $this->wait(self::TIMEOUT);
         return $rv;
     }
 
@@ -250,6 +255,18 @@ class behat_ui extends behat_base {
      */
     public function i_change_browser_size_to($width, $height) {
         $this->getSession()->resizeWindow((int)$width, (int)$height, null);
+        return true;
+    }
+
+    /**
+     * @Given /^I expand all course overviews$/
+     */
+    public function i_expand_all_overviews() {
+        $links = $this->find_all('css', '.collapsibleregion .collapsibleregioncaption > a');
+        foreach ($links as $link) {
+            $link->click();
+            sleep(2);
+        }
         return true;
     }
 }
