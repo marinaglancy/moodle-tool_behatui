@@ -1,6 +1,10 @@
 tool_behatui introduces features for changing the current theme and saving screenshots.
 The main objective is to be able to see how particular screen looks in all/several themes.
 
+Also it contains the .feature file for creating screenshots for all screens changed
+during course listings refactoring in 2.5
+See http://docs.moodle.org/dev/Courses_lists_upgrade_to_2.5
+
 More about Acceptance testing: http://docs.moodle.org/dev/Acceptance_testing
 
 First you need to define $CFG->behat_screenshots_dir in config.php
