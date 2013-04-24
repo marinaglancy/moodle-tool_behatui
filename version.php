@@ -24,6 +24,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2013041800;
+$plugin->version   = 2013042400;
 $plugin->requires  = 2012120300; // Requires Moodle 2.5.
 $plugin->component = 'tool_behatui';
