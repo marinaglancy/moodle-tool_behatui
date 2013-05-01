@@ -102,6 +102,9 @@ class behat_ui extends behat_base {
         }
 
         $filename = preg_replace('/\{themename\}/', self::$lasttheme, $filename);
+        if (preg_match('/\{lang\}/', $filename)) {
+            $filename = preg_replace('/\{lang\}/', $this->find('css', 'html')->getAttribute('lang'), $filename);
+        }
         // find unused file name
         $filename = trim($filename);
         if (!empty($filename) && !preg_match('/\.png$/i', $filename)) {
@@ -121,6 +124,10 @@ class behat_ui extends behat_base {
             $filename = $newfilename;
         }
 
+        if (($subpath = dirname($filename)) && !file_exists($filepath. DIRECTORY_SEPARATOR . $subpath)) {
+            mkdir($filepath. DIRECTORY_SEPARATOR . $subpath, 0777, true);
+        }
+
         // save screenshot
         $this->wait(self::TIMEOUT, '(document.readyState === "complete")');
         $this->saveScreenshot($filename, $filepath);
@@ -137,17 +144,26 @@ class behat_ui extends behat_base {
         if (self::$lasttheme === $themename) {
             return true;
         }
+        // Go to "Theme selector" page for Default device
+        $this->getSession()->visit($this->locate_path('/theme/index.php?device=default'));
+
+        // Find table cell containing theme name and click button "Use theme" in this cell
+        $rownode = $this->find('xpath', "//td[.//h3='" . str_replace("'", "\'", $themename) . "']");
+        list($selector, $locator) = $this->transform_selector("button", "Use theme");
+        $elementnode = $this->find($selector, $locator, false, $rownode);
+        try {
+            $elementnode->click();
+        } catch (Exception $e) {
+            // we could not click button because it is invisible. Submit form using Javascript
+            $formxpath = $this->find('css', 'form', false, $rownode)->getXpath();
+            $jscode = 'document.evaluate("'.str_replace("'", "\'", $formxpath).'" ,document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue.submit();';
+            $this->getSession()->executeScript($jscode);
+        }
+
+        // Return to homepage
+        $this->getSession()->visit($this->locate_path('/'));
+
         self::$lasttheme = $themename;
-        return array(
-            new Given('I am on homepage'),
-            new Given('I expand "Site administration" node'),
-            new Given('I expand "Appearance" node'),
-            new Given('I expand "Themes" node'),
-            new Given('I follow "Theme selector"'),
-            new Given('I press "Change theme"'),
-            new Given('I click on "Use theme" "button" in the "'.$themename.'" table row'),
-            new Given('I am on homepage')
-        );
     }
 
     /**
@@ -207,7 +223,7 @@ class behat_ui extends behat_base {
 
     /**
      * Changes value in admin setting that consists of several select elements
-     * 
+     *
      * @param string $label either 'frontpage' or 'frontpageloggedin'
      * @param string $value comma-separated list of frontpage sections
      */
@@ -259,14 +275,95 @@ class behat_ui extends behat_base {
     }
 
     /**
+     * On /my/ page clicks on all activity types to expand them (to be used for screenshot)
+     *
      * @Given /^I expand all course overviews$/
      */
-    public function i_expand_all_overviews() {
-        $links = $this->find_all('css', '.collapsibleregion .collapsibleregioncaption > a');
-        foreach ($links as $link) {
-            $link->click();
-            sleep(2);
+    public function i_expand_all_course_overviews() {
+        if ($links = $this->getSession()->getPage()->findAll('css', '.collapsibleregion .collapsibleregioncaption')) {
+            foreach ($links as $link) {
+                $link->click();
+                $this->getSession()->wait(2 * 1000, false);
+            }
         }
         return true;
+    }
+
+    /**
+     * Installs the language pack, use 2-letter code here (may be several values comma-separated). Must be admin
+     *
+     * @When /^I install languages "(.*)"$/
+     */
+    public function i_install_languages($lang) {
+        $langlist = array_diff(preg_split('/\s*,\s*/', trim($lang), 0, PREG_SPLIT_NO_EMPTY), array('en'));
+        if (empty($langlist)) {
+            return;
+        }
+        $this->getSession()->visit($this->locate_path('/admin/tool/langimport/index.php'));
+        $selectnode = $this->find_field("List of available languages");
+        foreach (preg_split('/\s*,\s*/', trim($lang), 0, PREG_SPLIT_NO_EMPTY) as $l) {
+            $this->getSession()->getDriver()->selectOption($selectnode->getXpath(), $l, true);
+        }
+        $button = $this->find_button("Install selected language pack");
+        $button->press();
+        $this->getSession()->wait(5 * 1000, false);
+        $this->getSession()->visit($this->locate_path('/'));
+    }
+
+    /**
+     * Sets the current language, use 2-letter code here.
+     *
+     * Please note that the most of commands will not work in another language,
+     * this directive is used primarily for saving a screenshots and going back to English.
+     *
+     * @When /^I change language to (\w\w)$/
+     */
+    public function i_change_language_to($lang) {
+        if ($this->find('css', 'html')->getAttribute('lang') === $lang) {
+            return;
+        }
+        if (!($langbar = $this->getSession()->getPage()->find('css', 'select.langmenu'))) {
+            // page does not have a language selector
+            $this->fast_change_language($lang);
+            return;
+        }
+        $this->getSession()->getDriver()->selectOption($langbar->getXpath(), $lang, false);
+        if ($this->running_javascript()) {
+           $langbar->click();
+        }
+        sleep(2);
+        $this->getSession()->wait(self::TIMEOUT, '(document.readyState === "complete")');
+    }
+
+    /**
+     * Changes the current language
+     *
+     * Generally It's better to use "When I change language to XX" but sometimes the select.langmenu is not displayed
+     *
+     * @param string $lang
+     */
+    private function fast_change_language($lang) {
+        if ($this->find('css', 'html')->getAttribute('lang') === $lang) {
+            return;
+        }
+        $href = $this->getSession()->getDriver()->getCurrentUrl();
+        $url = new moodle_url($href);
+        $url->param('lang', $lang);
+        $this->getSession()->getDriver()->visit($url->out(false));
+    }
+
+    /**
+     * Saves screenshot in several languages with specified filename, resets language to English afterwards
+     *
+     * @Then /^I save screenshots in languages "(.*?)" as (.*)$/
+     * @param string $filename
+     */
+    public function i_save_screenshots_in_languages_as($langs, $filename) {
+        $langs = preg_split("/\s*,\s*/", $langs, 0, PREG_SPLIT_NO_EMPTY);
+        foreach ($langs as $lang) {
+            $this->fast_change_language($lang);
+            $this->save_a_screenshot_as($filename);
+        }
+        $this->fast_change_language('en');
     }
 }

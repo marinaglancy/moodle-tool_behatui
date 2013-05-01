@@ -5,41 +5,47 @@ Feature: View course lists
   I need to be able to see course lists
 
   Background:
+    # -------------------------------------------------------------------------------
+    # Generate categories
+    # -------------------------------------------------------------------------------
     Given the following "categories" exists:
-      | name | category | idnumber |
-      | Cat 1 (many subcategories, no courses) | 0 | CAT1 |
-      | Cat 2 (no subcategories, many courses) | 0 | CAT2 |
-      | Cat 3 with very long name that to test how it is wrapped into several lines. Cat 3 with very long name that to test how it is wrapped into several lines. Cat 3 with very long name that to test how it is wrapped into several lines. | 0 | CAT3 |
-      | Cat 4 | CAT1 | CAT4 |
-      | Cat 5 | CAT1 | CAT5 |
-      | Cat 6 | CAT1 | CAT6 |
-      | Cat 7 | CAT1 | CAT7 |
-      | Cat 8 | CAT1 | CAT8 |
-      | Cat 9 | CAT1 | CAT9 |
-      | Cat 10 | CAT1 | CAT10 |
-      | Cat 11 | CAT1 | CAT11 |
-      | Cat 12 | CAT1 | CAT12 |
-      | Cat 13 | CAT5 | CAT13 |
-      | Cat 14 | CAT5 | CAT14 |
-      | Cat 15 (many subcategories, many courses) | CAT5 | CAT15 |
-      | Cat 16 | CAT15 | CAT16 |
-      | Cat 17 | CAT15 | CAT17 |
-      | Cat 24 | CAT15 | CAT24 |
-      | Cat 25 | CAT15 | CAT25 |
-      | Cat 26 | CAT15 | CAT26 |
-      | Cat 27 | CAT15 | CAT27 |
-      | Cat 28 | CAT15 | CAT28 |
-      | Cat 29 | CAT15 | CAT29 |
-      | Cat 18 | CAT1 | CAT18 |
-      | Cat 19 | CAT1 | CAT19 |
-      | Cat 20 | CAT1 | CAT20 |
-      | Cat 21 | CAT1 | CAT21 |
-      | Cat 22 | CAT1 | CAT22 |
-      | Cat 23 | CAT1 | CAT23 |
+      | name | category | idnumber | description |
+      | Cat 1 (many subcategories, no courses) | 0 | CAT1 | Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla non arcu lacinia neque faucibus fringilla. Vivamus porttitor turpis ac leo. Integer in sapien. Nullam eget nisl. Aliquam erat volutpat. Cras elementum. Mauris suscipit, ligula sit amet pharetra semper, nibh ante cursus purus, vel sagittis velit mauris vel metus. Integer malesuada. Nullam lectus justo, vulputate eget mollis sed, tempor sed magna. Mauris elementum mauris vitae tortor. Aliquam erat volutpat. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Pellentesque ipsum. Cras pede libero, dapibus nec, pretium sit amet, tempor quis. Aliquam ante. Proin in tellus sit amet nibh dignissim sagittis. Vivamus porttitor turpis ac leo. |
+      | Cat 2 (no subcategories, many courses) | 0 | CAT2 | Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla non arcu lacinia neque faucibus fringilla. Vivamus porttitor turpis ac leo. Integer in sapien. Nullam eget nisl. Aliquam erat volutpat. Cras elementum. Mauris suscipit, ligula sit amet pharetra semper, nibh ante cursus purus, vel sagittis velit mauris vel metus. Integer malesuada. Nullam lectus justo, vulputate eget mollis sed, tempor sed magna. Mauris elementum mauris vitae tortor. Aliquam erat volutpat. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Pellentesque ipsum. Cras pede libero, dapibus nec, pretium sit amet, tempor quis. Aliquam ante. Proin in tellus sit amet nibh dignissim sagittis. Vivamus porttitor turpis ac leo. |
+      | Cat 3 with very long name that to test how it is wrapped into several lines. Cat 3 with very long name that to test how it is wrapped into several lines. Cat 3 with very long name that to test how it is wrapped into several lines. | 0 | CAT3 | Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla non arcu lacinia neque faucibus fringilla. Vivamus porttitor turpis ac leo. Integer in sapien. Nullam eget nisl. Aliquam erat volutpat. Cras elementum. Mauris suscipit, ligula sit amet pharetra semper, nibh ante cursus purus, vel sagittis velit mauris vel metus. Integer malesuada. Nullam lectus justo, vulputate eget mollis sed, tempor sed magna. Mauris elementum mauris vitae tortor. Aliquam erat volutpat. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Pellentesque ipsum. Cras pede libero, dapibus nec, pretium sit amet, tempor quis. Aliquam ante. Proin in tellus sit amet nibh dignissim sagittis. Vivamus porttitor turpis ac leo. |
+      | Cat 4 | CAT1 | CAT4 | |
+      | Cat 5 | CAT1 | CAT5 | |
+      | Cat 6 | CAT1 | CAT6 | |
+      | Cat 7 | CAT1 | CAT7 | |
+      | Cat 8 | CAT1 | CAT8 | |
+      | Cat 9 | CAT1 | CAT9 | |
+      | Cat 10 | CAT1 | CAT10 | |
+      | Cat 11 | CAT1 | CAT11 | |
+      | Cat 12 | CAT1 | CAT12 | |
+      | Cat 13 | CAT5 | CAT13 | |
+      | Cat 14 | CAT5 | CAT14 | |
+      | Cat 15 (many subcategories, many courses) | CAT5 | CAT15 | Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla non arcu lacinia neque faucibus fringilla. Vivamus porttitor turpis ac leo. Integer in sapien. Nullam eget nisl. Aliquam erat volutpat. Cras elementum. Mauris suscipit, ligula sit amet pharetra semper, nibh ante cursus purus, vel sagittis velit mauris vel metus. Integer malesuada. Nullam lectus justo, vulputate eget mollis sed, tempor sed magna. Mauris elementum mauris vitae tortor. Aliquam erat volutpat. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Pellentesque ipsum. Cras pede libero, dapibus nec, pretium sit amet, tempor quis. Aliquam ante. Proin in tellus sit amet nibh dignissim sagittis. Vivamus porttitor turpis ac leo. |
+      | Cat 16 | CAT15 | CAT16 | |
+      | Cat 17 | CAT15 | CAT17 | |
+      | Cat 24 | CAT15 | CAT24 | |
+      | Cat 25 | CAT15 | CAT25 | |
+      | Cat 26 | CAT15 | CAT26 | |
+      | Cat 27 | CAT15 | CAT27 | |
+      | Cat 28 | CAT15 | CAT28 | |
+      | Cat 29 | CAT15 | CAT29 | |
+      | Cat 18 | CAT1 | CAT18 | |
+      | Cat 19 | CAT1 | CAT19 | |
+      | Cat 20 | CAT1 | CAT20 | |
+      | Cat 21 | CAT1 | CAT21 | |
+      | Cat 22 | CAT1 | CAT22 | |
+      | Cat 23 | CAT1 | CAT23 | |
     And the following "categories" exists:
       | name | category | idnumber | visible |
       | Cat 40 (hidden) | CAT13 | CAT40 | 0 |
       | Cat 41 (hidden) | CAT40 | CAT41 | 0 |
+    # -------------------------------------------------------------------------------
+    # Generate courses
+    # -------------------------------------------------------------------------------
     And the following "courses" exists:
       | fullname | shortname | category | summary |
       | Cat course | COURSE1 | 0 | The domestic cat is a small, usually furry, domesticated, and carnivorous mammal. It is often called the housecat when kept as an indoor pet, or simply the cat when there is no need to distinguish it from other felids and felines. Cats are valued by humans for companionship and their ability to hunt vermin and household pests. |
@@ -63,6 +69,9 @@ Feature: View course lists
       | Course 19 | COURSE19 | CAT15 | Course summary |
       | Course 20 | COURSE20 | CAT15 | Course summary |
       | Course 6 with very long name that to test how it is wrapped into several lines. Course 6 with very long name that to test how it is wrapped into several lines. Course 6 with very long name that to test how it is wrapped into several lines | COURSE6 | CAT2 | Course summary |
+    # -------------------------------------------------------------------------------
+    # Generate and enrol student and teachers
+    # -------------------------------------------------------------------------------
     And the following "users" exists:
       | username | firstname | lastname | email | auth | confirmed |
       | student1 | Sam1 | Student1 | student1@test.com | manual | 1 |
@@ -75,56 +84,66 @@ Feature: View course lists
       | teacher2 | COURSE2 | editingteacher |
       | student1 | COURSE1 | student |
       | student1 | COURSE2 | student |
+    # -------------------------------------------------------------------------------
+    # Allow uploading more course summary files than default:
+    # -------------------------------------------------------------------------------
     And I log in as "admin"
     And I set the following administration settings values:
-      | Course overview files limit | 5 |
-      | Course overview files extensions | .jpg,.gif,.png,.pdf |
-    # Allow guest access to "Cat course":
+      | Course summary files limit | 5 |
+      | Course summary files extensions | .jpg,.gif,.png,.pdf |
+    # -------------------------------------------------------------------------------
+    # Allow guest access to "Cat course", add summary files:
+    # -------------------------------------------------------------------------------
     When I am on homepage
     And I follow "Cat course"
     And I follow "Edit settings"
-    And I upload "admin/tool/behatui/tests/fixtures/cat.jpg" file to "Course overview files" filepicker
+    And I upload "admin/tool/behatui/tests/fixtures/cat.jpg" file to "Course summary files" filepicker
     And I fill the moodle form with:
       | Allow guest access | Yes |
     And I press "Save changes"
-    # Enable self-enrolment for "Mouse course":
+    # -------------------------------------------------------------------------------
+    # Enable self-enrolment for "Mouse course", add summary files:
+    # -------------------------------------------------------------------------------
     When I am on homepage
     And I follow "Mouse course"
     And I follow "Edit settings"
-    And I upload "admin/tool/behatui/tests/fixtures/mouse.jpg" file to "Course overview files" filepicker
+    And I upload "admin/tool/behatui/tests/fixtures/mouse.jpg" file to "Course summary files" filepicker
     And I press "Save changes"
     And I add "Self enrolment" enrolment method with:
       | Custom instance name | Test student enrolment |
     And I am on homepage
-    # Enable self-enrolment and guest access for "Dog course":
+    # -------------------------------------------------------------------------------
+    # Enable self-enrolment and guest access for "Dog course", add summary files:
+    # -------------------------------------------------------------------------------
     When I am on homepage
     And I follow "Dog course"
     And I follow "Edit settings"
-    And I upload "admin/tool/behatui/tests/fixtures/dog.jpg" file to "Course overview files" filepicker
-    And I upload "admin/tool/behatui/tests/fixtures/dog_course_overview.pdf" file to "Course overview files" filepicker
+    And I upload "admin/tool/behatui/tests/fixtures/dog.jpg" file to "Course summary files" filepicker
+    And I upload "admin/tool/behatui/tests/fixtures/dog_course_overview.pdf" file to "Course summary files" filepicker
     And I fill the moodle form with:
       | Allow guest access | Yes |
     And I press "Save changes"
     And I add "Self enrolment" enrolment method with:
       | Custom instance name | Test student enrolment |
     And I am on homepage
-    # Hide and enable self-enrolment and guest access for "Dog course (hidden)":
+    # -------------------------------------------------------------------------------
+    # Hide course and enable self-enrolment and guest access for "Dog hidden course", add summary files:
+    # -------------------------------------------------------------------------------
     When I am on homepage
     And I follow "Dog hidden course"
     And I follow "Edit settings"
-    And I upload "admin/tool/behatui/tests/fixtures/dog.jpg" file to "Course overview files" filepicker
-    And I upload "admin/tool/behatui/tests/fixtures/dog_course_overview.pdf" file to "Course overview files" filepicker
+    And I upload "admin/tool/behatui/tests/fixtures/dog.jpg" file to "Course summary files" filepicker
+    And I upload "admin/tool/behatui/tests/fixtures/dog_course_overview.pdf" file to "Course summary files" filepicker
     And I fill the moodle form with:
       | Allow guest access | Yes |
-      | Availability | 0 |
+      | Visible | Hide |
     And I press "Save changes"
     And I add "Self enrolment" enrolment method with:
       | Custom instance name | Test student enrolment |
-    And I am on homepage
-    # End
-    And I log out
-    # ------------ Create modules inside "Cat course" -----------------
-    And I log in as "teacher1"
+    # -------------------------------------------------------------------------------
+    # Create modules inside "Cat course" (they will be seen on /my/ page)
+    # -------------------------------------------------------------------------------
+    When I am on homepage
     And I follow "Cat course"
     And I turn editing mode on
     And I add a "Assignment" to section "1" and I fill the form with:
@@ -135,13 +154,17 @@ Feature: View course lists
     And I add a "Chat" to section "1" and I fill the form with:
       | Name of this chat room | Test chat name |
       | Description | The new chat |
-      | Repeat sessions | At the same time every week |
+      | Repeat/publish session times | At the same time every week |
     And I log out
 
   @javascript
-  Scenario: Make screenshots of course listings
+  Scenario Outline: Make screenshots of course listings
+    # -------------------------------------------------------------------------------
+    # Install languages, set browser size, change values for "courses per page" and other config variables affecting display.
+    # -------------------------------------------------------------------------------
     Given I log in as "admin"
-    And I change browser size to 1200x768
+    And I install languages "<languages>"
+    And I change browser size to <browserwidth>x768
     And I set the following administration settings values:
       | Courses per page | 5 |
       | Courses with summaries limit | 4 |
@@ -152,47 +175,55 @@ Feature: View course lists
     And I fill in "id_s__maxcategorydepth" with "10"
     And I press "Save changes"
     And I change guest frontpage display to List of courses
-    # And Repeat in themes "Afterburner,Anomaly,Arialist,Binarius,Boxxie,Brick,Formal white,FormFactor,Fusion,Leatherbound,Magazine,Nimble,Nonzero,Overlay,Serenity,Simple,Sky High,Splash,Standard (legacy),Standard":
-    And Repeat in themes "Standard":
+    And Repeat in themes "<themes>":
       """
       And I change frontpage display to Enrolled courses
       And I log out
-      Then I save a screenshot as 01_frontpageguest_{themename}
-      When I follow "Mouse course"  
-      Then I save a screenshot as 14_courseenrol_{themename}
+      Then I save screenshots in languages "<languages>" as {themename}/{lang}_01_frontpageguest
+      When I follow "Mouse course"
+      Then I save screenshots in languages "<languages>" as {themename}/{lang}_14_courseenrol
       When I log in as "student1"
       And I am on homepage
-      Then I save a screenshot as 02_frontpageenroled_{themename}
+      Then I save screenshots in languages "<languages>" as {themename}/{lang}_02_frontpageenroled
       And I follow "My courses"
       And I expand all course overviews
-      Then I save a screenshot as 15_mycourses_{themename}
+      Then I save screenshots in languages "<languages>" as {themename}/{lang}_15_mycourses
       And I log out
       When I log in as "admin"
       And I change frontpage display to Combo list
       And I am on homepage
-      Then I save a screenshot as 03_frontpagecombo_{themename}
+      Then I save screenshots in languages "<languages>" as {themename}/{lang}_03_frontpagecombo
       When I change frontpage display to List of categories,Course search box
       And I am on homepage
-      Then I save a screenshot as 04_frontpagecategories_{themename}
+      Then I save screenshots in languages "<languages>" as {themename}/{lang}_04_frontpagecategories
       When I follow "Courses"
-      Then I save a screenshot as 05_coursespage_{themename}
+      Then I save screenshots in languages "<languages>" as {themename}/{lang}_05_coursespage
       When I follow "Miscellaneous"
-      Then I save a screenshot as 06_smallcategory_{themename}
+      Then I save screenshots in languages "<languages>" as {themename}/{lang}_06_smallcategory
       When I follow "Courses"
       And I follow "Cat 1 (many subcategories, no courses)"
-      Then I save a screenshot as 07_categoriespaging_{themename}
+      Then I save screenshots in languages "<languages>" as {themename}/{lang}_07_categoriespaging
       When I follow "Courses"
       And I follow "Cat 2 (no subcategories, many courses)"
-      Then I save a screenshot as 08_coursespaging_{themename}
+      Then I save screenshots in languages "<languages>" as {themename}/{lang}_08_coursespaging
       When I follow "Courses"
       When I fill in "Search courses:" with "course"
       And I press "Go"
-      Then I save a screenshot as 09_coursesearch_{themename}
+      Then I save screenshots in languages "<languages>" as {themename}/{lang}_09_coursesearch
       When I am on homepage
       And I follow "Cat 15 (many subcategories, many courses)"
-      Then I save a screenshot as 10_bigcategory_{themename}
       And I follow "View more"
-      Then I save a screenshot as 11_bigcategorycategories_{themename}
+      Then I save screenshots in languages "<languages>" as {themename}/{lang}_11_bigcategorycategories
       And I follow "View all courses"
-      Then I save a screenshot as 12_bigcategorycourses_{themename}
+      Then I save screenshots in languages "<languages>" as {themename}/{lang}_12_bigcategorycourses
       """
+
+# ===============================================================================
+# Modify this to change the languages and/or themes set!
+#
+# Full list of moodle themes (excluding MyMobile):
+# Afterburner,Anomaly,Arialist,Binarius,Boxxie,Brick,Clean,Formal white,FormFactor,Fusion,Leatherbound,Magazine,Nimble,Nonzero,Overlay,Serenity,Sky High,Splash,Standard (legacy),Standard
+# ===============================================================================
+  Examples:
+    | languages | browserwidth | themes |
+    | en,he | 1200 | Standard,Clean |

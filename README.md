@@ -16,13 +16,12 @@ course listings.
    where screenshots will be stored (separate subfolder will be created for each test run)
 4. Copy the file **[tests/behat/courses_list.feature.example](tests/behat/courses_list.feature.example)**
    to **tests/behat/courses_list.feature**.
-
    This test generates plenty of categories and courses, changes the default settings so
    the pagination is displayed more often, runs through all affected screens and saves
    screenshots.
-5. In this file modify the line **And Repeat in themes "Standard":**
-   substituting "Standard" with the list of themes that you want to test.
-   Note that there is a commented example with all core themes above this line.
+5. In this file modify the "Examples" section in the very bottom to specify
+   the list of languages and themes that you want to test.
+   Note that there is a commented example with all core themes.
 6. Run test from moodle root dir (ROOTDIR):
 
         php admin/tool/behat/cli/util.php --enable
@@ -44,14 +43,19 @@ Example of scenario:
     Then I save a screenshot
     When I change frontpage display to Combo list
     And I change guest frontpage display to List of categories,Course search box
-    And Repeat in themes "Afterburner,Anomaly,Arialist,Binarius,Boxxie,Brick,Formal white,FormFactor,Fusion,Leatherbound,Magazine,Nimble,Nonzero,Overlay,Serenity,Simple,Sky High,Splash,Standard (legacy),Standard":
+    And I install languages "he,fr"
+    And Repeat in themes "Afterburner,Anomaly,Arialist,Binarius,Boxxie,Brick,Clean,Formal white,FormFactor,Fusion,Leatherbound,Magazine,Nimble,Nonzero,Overlay,Serenity,Sky High,Splash,Standard (legacy),Standard":
       """
       When I am on homepage
       Then I save a screenshot as homepage_admin_{themename}
       And I log out
-      And I save a screenshot as homepage_guest_{themename}
+      And I save screenshots in languages "en,he,fr" as homepage_guest_{lang}_{themename}
       And I log in as "admin"
       """
+    And I change language to fr
+    And I save a screenshot as another_fr_screenshot
+    And I change language to en
+    And I change browser size to 600x768px
     And I change theme to MyMobile
     Then I save a screenshot as homepage_admin_{themename}
     And I log out
@@ -60,14 +64,3 @@ Example of scenario:
 Please note:
 You must be logged in as admin in order to change theme, repeat in themes and
 change frontpage display. You don't have to be admin to save a screenshot.
-
-
-
-Known bugs
-----------
-
-You need to have pretty wide browser window to change theme from Arialist to anything else.
-It works if you resize the browser window in the beginning of the test.
-
-You can not change the theme from MyMobile to anything else (therefore MyMobile test is
-located in the end of example)
