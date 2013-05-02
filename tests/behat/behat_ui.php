@@ -280,6 +280,7 @@ class behat_ui extends behat_base {
      * @Given /^I expand all course overviews$/
      */
     public function i_expand_all_course_overviews() {
+        $this->getSession()->wait(self::TIMEOUT, '(document.readyState === "complete")');
         if ($links = $this->getSession()->getPage()->findAll('css', '.collapsibleregion .collapsibleregioncaption')) {
             foreach ($links as $link) {
                 $link->click();

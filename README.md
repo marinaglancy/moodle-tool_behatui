@@ -63,4 +63,7 @@ Example of scenario:
 
 Please note:
 You must be logged in as admin in order to change theme, repeat in themes and
-change frontpage display. You don't have to be admin to save a screenshot.
+change frontpage display. You don't have to be admin to save a screenshot,
+change browser size and/or change language.
+
+You can only use single-line commands inside "Repeat in themes".
